@@ -3,6 +3,7 @@ package com.example.rogueprogress.event;
 import com.example.rogueprogress.RogueProgress;
 import com.example.rogueprogress.data.ProgressData;
 import com.example.rogueprogress.data.ProgressManager;
+import com.example.rogueprogress.util.AttributeUtil;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -21,6 +22,7 @@ public final class PlayerLoginHandler {
 
         UUID playerId = player.getUUID();
         ProgressData data = ProgressManager.reload(playerId);
+        AttributeUtil.applyProgressAttributes(player, data);
 
         RogueProgress.LOGGER.info(
                 "Loaded Rogue Progress data for {} ({}): soul={}, level={}, strength={}, health={}, speed={}, armor={}, luck={}",
@@ -34,5 +36,22 @@ public final class PlayerLoginHandler {
                 data.getArmor(),
                 data.getLuck()
         );
+    }
+
+    @SubscribeEvent
+    public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) {
+            return;
+        }
+
+        ProgressData data = ProgressManager.getOrCreate(player.getUUID());
+        AttributeUtil.applyProgressAttributes(player, data);
+    }
+
+    @SubscribeEvent
+    public static void onPlayerLoggedOut(PlayerEvent.PlayerLoggedOutEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            ProgressManager.unload(player.getUUID());
+        }
     }
 }

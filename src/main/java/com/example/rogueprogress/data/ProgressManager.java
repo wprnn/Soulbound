@@ -6,6 +6,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public final class ProgressManager {
     private static final Map<UUID, ProgressData> CACHE = new ConcurrentHashMap<>();
+    private static final Map<UUID, Integer> RUN_KILLS = new ConcurrentHashMap<>();
+    private static final Map<UUID, Integer> RUN_SOULS = new ConcurrentHashMap<>();
 
     private ProgressManager() {
     }
@@ -32,8 +34,41 @@ public final class ProgressManager {
         JsonStorage.save(playerId, data);
     }
 
+    public static void addSoul(UUID playerId, int amount) {
+        if (amount <= 0) {
+            return;
+        }
+
+        ProgressData data = getOrCreate(playerId);
+        data.addSoul(amount);
+        RUN_SOULS.merge(playerId, amount, Integer::sum);
+        save(playerId, data);
+    }
+
+    public static void recordKill(UUID playerId) {
+        RUN_KILLS.merge(playerId, 1, Integer::sum);
+    }
+
+    public static int getRunKills(UUID playerId) {
+        return RUN_KILLS.getOrDefault(playerId, 0);
+    }
+
+    public static int getRunSouls(UUID playerId) {
+        return RUN_SOULS.getOrDefault(playerId, 0);
+    }
+
+    public static int calculateDeathSettlementSoul(UUID playerId) {
+        return getRunKills(playerId) / 2;
+    }
+
+    public static void resetRun(UUID playerId) {
+        RUN_KILLS.remove(playerId);
+        RUN_SOULS.remove(playerId);
+    }
+
     public static void unload(UUID playerId) {
         save(playerId);
+        resetRun(playerId);
         CACHE.remove(playerId);
     }
 
