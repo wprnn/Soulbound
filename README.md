@@ -10,7 +10,7 @@ Soulbound 为 Minecraft 添加了类似 Roguelike 的持久化角色成长机制
 
 - **灵魂与成长** — 击杀普通/精英/Boss 生物获得 1/5/25 灵魂
 - **死亡结算** — 死亡时将击杀数按比例转化为灵魂奖励，轮回统计重置
-- **五项可升级属性**
+- **升级属性**
   | 属性 | 效果 | 默认每级加成 |
   |---|---|---|
   | 力量 | 攻击伤害（固定 + 百分比） | 固定 0，+3% |
@@ -32,24 +32,22 @@ Soulbound 为 Minecraft 添加了类似 Roguelike 的持久化角色成长机制
 ## 使用
 
 ### 打开界面
-点击主菜单标题画面的 **Soulbound** 按钮，或使用按键绑定（设置 → 控制 → Soulbound）。
+点击主菜单标题画面的 **Soulbound** 按钮。
 
 ### 命令
-所有命令需要管理员权限（等级 2）。
+所有命令需要管理员权限。
 
 ```
 /soulbound                           查看当前进度
-/soulbound add soul <数量>           添加灵魂（管理员）
+/soulbound add soul <数量>           添加灵魂
 /soulbound caps show                 显示当前生效上限
-/soulbound caps set <属性> <值>      运行时覆盖属性上限
-/soulbound caps reload               清除所有运行时覆盖，恢复持久化值
+/soulbound caps set <属性> <值>      修改属性上限
+/soulbound caps reload               重载
 ```
-
-支持的属性名：`strength`、`health`、`speed`、`armor`、`luck`（也支持中文名）。
 
 ## 配置
 
-配置文件：`config/soulbound-server.toml`（首次运行自动生成）。
+配置文件：`config/soulbound-common.toml`（首次运行自动生成）。
 
 可在游戏内 Mods → Config → Soulbound 界面编辑，或直接修改 TOML 文件。
 
@@ -92,36 +90,11 @@ Soulbound 为 Minecraft 添加了类似 Roguelike 的持久化角色成长机制
 |--------|--------|------|
 | `refundPercent` | 90 | 重置属性时返还灵魂的百分比 |
 
-## 本地化
-
-- 简体中文（`zh_cn`）— 完整翻译
-- 英文（`en_us`）— 完整翻译
-
-如需添加新语言，复制 `assets/soulbound/lang/en_us.json`，重命名为对应语言代码，翻译其中的值即可。
-
-## 开发
-
-### 环境要求
-- JDK 21+
-- Git
-
 ### 构建
 ```bash
 git clone https://github.com/anomalyco/Soulbound.git
 cd Soulbound
 ./gradlew build
-```
-
-### IDE
-```bash
-./gradlew idea          # IntelliJ IDEA
-./gradlew eclipse       # Eclipse
-```
-
-### 运行
-```bash
-./gradlew runClient     # 启动 Minecraft 客户端
-./gradlew runServer     # 启动专用服务器
 ```
 
 ## 许可
