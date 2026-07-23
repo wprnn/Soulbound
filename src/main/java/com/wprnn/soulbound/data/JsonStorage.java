@@ -1,6 +1,6 @@
-package com.example.rogueprogress.data;
+package com.wprnn.soulbound.data;
 
-import com.example.rogueprogress.RogueProgress;
+import com.wprnn.soulbound.Soulbound;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
@@ -23,9 +23,9 @@ import java.util.UUID;
  */
 public final class JsonStorage {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
-    // 发行版路径：.minecraft/config/rogueprogress
-    // 开发环境路径：run/config/rogueprogress
-    private static final Path DATA_DIRECTORY = FMLPaths.CONFIGDIR.get().resolve(RogueProgress.MOD_ID);
+    // 发行版路径：.minecraft/config/Soulbound
+    // 开发环境路径：run/config/Soulbound
+    private static final Path DATA_DIRECTORY = FMLPaths.CONFIGDIR.get().resolve(Soulbound.MOD_ID);
 
     private JsonStorage() {
     }
@@ -52,7 +52,7 @@ public final class JsonStorage {
             return Optional.of(data);
         } catch (IOException | JsonSyntaxException exception) {
             // JSON 解析失败时回退默认值，不阻止玩家加入。
-            RogueProgress.LOGGER.error("Failed to load Rogue Progress data for player {} from {}", playerId, path, exception);
+            Soulbound.LOGGER.error("Failed to load Soulbound data for player {} from {}", playerId, path, exception);
             return Optional.empty();
         }
     }
@@ -69,7 +69,7 @@ public final class JsonStorage {
                 GSON.toJson(data, writer);
             }
         } catch (IOException exception) {
-            RogueProgress.LOGGER.error("Failed to save Rogue Progress data for player {} to {}", playerId, path, exception);
+            Soulbound.LOGGER.error("Failed to save Soulbound data for player {} to {}", playerId, path, exception);
         }
     }
 }

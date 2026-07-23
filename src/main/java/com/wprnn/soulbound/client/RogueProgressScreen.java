@@ -1,8 +1,8 @@
-package com.example.rogueprogress.client;
+package com.wprnn.soulbound.client;
 
-import com.example.rogueprogress.config.Config;
-import com.example.rogueprogress.data.ProgressData;
-import com.example.rogueprogress.data.ProgressManager;
+import com.wprnn.soulbound.config.Config;
+import com.wprnn.soulbound.data.ProgressData;
+import com.wprnn.soulbound.data.ProgressManager;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -39,7 +39,7 @@ public final class RogueProgressScreen extends Screen {
     private UUID playerId;
 
     public RogueProgressScreen(@Nullable Screen previousScreen) {
-        super(Component.translatable("rogueprogress.gui.title"));
+        super(Component.translatable("soulbound.gui.title"));
         this.previousScreen = previousScreen;
     }
 
@@ -97,14 +97,14 @@ public final class RogueProgressScreen extends Screen {
 
         int completeX = (width - 100) / 2;
         int resetX = completeX - 110;
-        int percent = com.example.rogueprogress.config.Config.REFUND_PERCENT.get();
+        int percent = com.wprnn.soulbound.config.Config.REFUND_PERCENT.get();
 
         addRenderableWidget(
-                Button.builder(Component.translatable("rogueprogress.gui.reset", percent), b -> onReset())
+                Button.builder(Component.translatable("soulbound.gui.reset", percent), b -> onReset())
                         .bounds(resetX, 220, 100, BUTTON_HEIGHT).build());
 
         addRenderableWidget(
-                Button.builder(Component.translatable("rogueprogress.gui.done"), b -> onClose())
+                Button.builder(Component.translatable("soulbound.gui.done"), b -> onClose())
                         .bounds(completeX, 220, 100, BUTTON_HEIGHT).build());
 
         updateUpgradeButtons();
@@ -120,8 +120,8 @@ public final class RogueProgressScreen extends Screen {
         renderBackground(guiGraphics, mouseX, mouseY, partialTick);
 
         guiGraphics.drawCenteredString(font, title, width / 2, 24, 0xFFDFA64A);
-        guiGraphics.drawCenteredString(font, Component.translatable("rogueprogress.gui.soul", data.getSoul()), width / 2, 44, 0x55FFFF);
-        guiGraphics.drawCenteredString(font, Component.translatable("rogueprogress.gui.level", data.getLevel()), width / 2, 58, 0xFFFF55);
+        guiGraphics.drawCenteredString(font, Component.translatable("soulbound.gui.soul", data.getSoul()), width / 2, 44, 0x55FFFF);
+        guiGraphics.drawCenteredString(font, Component.translatable("soulbound.gui.level", data.getLevel()), width / 2, 58, 0xFFFF55);
 
         super.render(guiGraphics, mouseX, mouseY, partialTick);
 
@@ -129,23 +129,23 @@ public final class RogueProgressScreen extends Screen {
         for (int idx = 0; idx < upgradeButtons.size(); idx++) {
             UpgradeButton b = upgradeButtons.get(idx);
             int level = b.getter.getAsInt();
-            Component attrName = Component.translatable("rogueprogress.attr." + b.key);
+            Component attrName = Component.translatable("soulbound.attr." + b.key);
 
             int cap = getCapFor(b.key);
             if (level >= cap) {
-                b.button.setMessage(Component.translatable("rogueprogress.gui.maxed", attrName, level));
+                b.button.setMessage(Component.translatable("soulbound.gui.maxed", attrName, level));
                 b.button.active = false;
             } else {
                 if (hasShiftDown()) {
                     int amount = Math.clamp(cap - level, 0, 10);
                     int cost = getTotalCost(level, amount);
                     int target = Math.min(cap, level + amount);
-                    b.button.setMessage(Component.translatable("rogueprogress.gui.upgrade", attrName, level, target, cost));
+                    b.button.setMessage(Component.translatable("soulbound.gui.upgrade", attrName, level, target, cost));
                     b.button.active = data.getSoul() >= cost;
                 } else {
                     int cost = getUpgradeCost(level);
                     int target = Math.min(cap, level + 1);
-                    b.button.setMessage(Component.translatable("rogueprogress.gui.upgrade", attrName, level, target, cost));
+                    b.button.setMessage(Component.translatable("soulbound.gui.upgrade", attrName, level, target, cost));
                     b.button.active = data.getSoul() >= cost;
                 }
             }
@@ -166,7 +166,7 @@ public final class RogueProgressScreen extends Screen {
                     double pTarget = computeTiered(target, Config.STRENGTH_PERCENT_PER_LEVEL.get(), tb, Config.STRENGTH_PERCENT_PER_LEVEL_LATER.get());
                     double fCur = computeTiered(level, Config.STRENGTH_FLAT_PER_LEVEL.get(), tb, Config.STRENGTH_FLAT_PER_LEVEL_LATER.get());
                     double fTarget = computeTiered(target, Config.STRENGTH_FLAT_PER_LEVEL.get(), tb, Config.STRENGTH_FLAT_PER_LEVEL_LATER.get());
-                    previewComp = Component.translatable("rogueprogress.gui.preview_attack",
+                    previewComp = Component.translatable("soulbound.gui.preview_attack",
                             formatPreview(pCur, fCur), formatPreview(pTarget, fTarget));
                     break;
                 }
@@ -176,7 +176,7 @@ public final class RogueProgressScreen extends Screen {
                     double pTarget = computeTiered(target, Config.ARMOR_PERCENT_PER_LEVEL.get(), tb, Config.ARMOR_PERCENT_PER_LEVEL_LATER.get());
                     double fCur = computeTiered(level, Config.ARMOR_FLAT_PER_LEVEL.get(), tb, Config.ARMOR_FLAT_PER_LEVEL_LATER.get());
                     double fTarget = computeTiered(target, Config.ARMOR_FLAT_PER_LEVEL.get(), tb, Config.ARMOR_FLAT_PER_LEVEL_LATER.get());
-                    previewComp = Component.translatable("rogueprogress.gui.preview_armor",
+                    previewComp = Component.translatable("soulbound.gui.preview_armor",
                             formatPreview(pCur, fCur), formatPreview(pTarget, fTarget));
                     break;
                 }
@@ -185,7 +185,7 @@ public final class RogueProgressScreen extends Screen {
                     double fTarget = computeTiered(target, Config.HEALTH_FLAT_PER_LEVEL.get(), 0, 0);
                     double pCur = computeTiered(level, Config.HEALTH_PERCENT_PER_LEVEL.get(), 0, 0);
                     double pTarget = computeTiered(target, Config.HEALTH_PERCENT_PER_LEVEL.get(), 0, 0);
-                    previewComp = Component.translatable("rogueprogress.gui.preview_health",
+                    previewComp = Component.translatable("soulbound.gui.preview_health",
                             formatPreview(pCur, fCur), formatPreview(pTarget, fTarget));
                     break;
                 }
@@ -194,7 +194,7 @@ public final class RogueProgressScreen extends Screen {
                     double pTarget = computeTiered(target, Config.SPEED_PERCENT_PER_LEVEL.get(), 0, 0);
                     double fCur = computeTiered(level, Config.SPEED_FLAT_PER_LEVEL.get(), 0, 0);
                     double fTarget = computeTiered(target, Config.SPEED_FLAT_PER_LEVEL.get(), 0, 0);
-                    previewComp = Component.translatable("rogueprogress.gui.preview_speed",
+                    previewComp = Component.translatable("soulbound.gui.preview_speed",
                             formatPreview(pCur, fCur), formatPreview(pTarget, fTarget));
                     break;
                 }
@@ -203,7 +203,7 @@ public final class RogueProgressScreen extends Screen {
                     double fTarget = computeTiered(target, Config.LUCK_FLAT_PER_LEVEL.get(), 0, 0);
                     double pCur = computeTiered(level, Config.LUCK_PERCENT_PER_LEVEL.get(), 0, 0);
                     double pTarget = computeTiered(target, Config.LUCK_PERCENT_PER_LEVEL.get(), 0, 0);
-                    previewComp = Component.translatable("rogueprogress.gui.preview_luck",
+                    previewComp = Component.translatable("soulbound.gui.preview_luck",
                             formatPreview(pCur, fCur), formatPreview(pTarget, fTarget));
                     break;
                 }
@@ -214,7 +214,7 @@ public final class RogueProgressScreen extends Screen {
     }
 
     private int getCapFor(String key) {
-        return com.example.rogueprogress.config.Config.getEffectiveCap(key);
+        return com.wprnn.soulbound.config.Config.getEffectiveCap(key);
     }
 
     private void addUpgradeButton(int x, int y, String key, IntSupplier getter, IntConsumer setter,
@@ -256,16 +256,16 @@ public final class RogueProgressScreen extends Screen {
         for (UpgradeButton button : upgradeButtons) {
             int level = button.getter.getAsInt();
             int cap = getCapFor(button.key);
-            Component attrName = Component.translatable("rogueprogress.attr." + button.key);
+            Component attrName = Component.translatable("soulbound.attr." + button.key);
 
             if (level >= cap) {
-                button.button.setMessage(Component.translatable("rogueprogress.gui.maxed", attrName, level));
+                button.button.setMessage(Component.translatable("soulbound.gui.maxed", attrName, level));
                 button.button.active = false;
                 continue;
             }
 
             int cost = getUpgradeCost(level);
-            button.button.setMessage(Component.translatable("rogueprogress.gui.upgrade", attrName, level, level + 1, cost));
+            button.button.setMessage(Component.translatable("soulbound.gui.upgrade", attrName, level, level + 1, cost));
             button.button.active = data.getSoul() >= cost;
         }
     }
@@ -294,7 +294,7 @@ public final class RogueProgressScreen extends Screen {
 
         if (totalSpent <= 0) return;
 
-        int percent = com.example.rogueprogress.config.Config.REFUND_PERCENT.get();
+        int percent = com.wprnn.soulbound.config.Config.REFUND_PERCENT.get();
         int refund = (int) Math.floor(totalSpent * (percent / 100.0));
 
         for (UpgradeButton b : upgradeButtons) {

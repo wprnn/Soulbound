@@ -1,9 +1,9 @@
-package com.example.rogueprogress.command;
+package com.wprnn.soulbound.command;
 
-import com.example.rogueprogress.config.Config;
-import com.example.rogueprogress.data.ProgressData;
-import com.example.rogueprogress.data.ProgressManager;
-import com.example.rogueprogress.util.AttributeUtil;
+import com.wprnn.soulbound.config.Config;
+import com.wprnn.soulbound.data.ProgressData;
+import com.wprnn.soulbound.data.ProgressManager;
+import com.wprnn.soulbound.util.AttributeUtil;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.arguments.StringArgumentType;
@@ -17,7 +17,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
 
 /**
- * 注册 /rogueprogress 命令，提供进度查看、添加灵魂及上限管理功能。
+ * 注册 /Soulbound 命令，提供进度查看、添加灵魂及上限管理功能。
  */
 public final class ProgressCommand {
     private ProgressCommand() {}
@@ -29,7 +29,7 @@ public final class ProgressCommand {
 
     private static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(
-                Commands.literal("rogueprogress")
+                Commands.literal("soulbound")
                         .executes(context -> showProgress(context.getSource()))
                         .then(Commands.literal("add")
                                 .requires(source -> source.hasPermission(2))
@@ -58,14 +58,14 @@ public final class ProgressCommand {
         ServerPlayer player = source.getPlayerOrException();
         ProgressData data = ProgressManager.getOrCreate(player.getUUID());
 
-        player.sendSystemMessage(Component.translatable("rogueprogress.command.header").withStyle(ChatFormatting.GOLD));
-        sendAttr(player, "rogueprogress.command.soul", String.valueOf(data.getSoul()), ChatFormatting.AQUA);
-        sendAttr(player, "rogueprogress.command.level", String.valueOf(data.getLevel()), ChatFormatting.WHITE);
-        sendAttr(player, "rogueprogress.attr.strength", String.valueOf(data.getStrength()), ChatFormatting.WHITE);
-        sendAttr(player, "rogueprogress.attr.health", String.valueOf(data.getHealth()), ChatFormatting.WHITE);
-        sendAttr(player, "rogueprogress.attr.speed", String.valueOf(data.getSpeed()), ChatFormatting.WHITE);
-        sendAttr(player, "rogueprogress.attr.armor", String.valueOf(data.getArmor()), ChatFormatting.WHITE);
-        sendAttr(player, "rogueprogress.attr.luck", String.valueOf(data.getLuck()), ChatFormatting.WHITE);
+        player.sendSystemMessage(Component.translatable("soulbound.command.header").withStyle(ChatFormatting.GOLD));
+        sendAttr(player, "soulbound.command.soul", String.valueOf(data.getSoul()), ChatFormatting.AQUA);
+        sendAttr(player, "soulbound.command.level", String.valueOf(data.getLevel()), ChatFormatting.WHITE);
+        sendAttr(player, "soulbound.attr.strength", String.valueOf(data.getStrength()), ChatFormatting.WHITE);
+        sendAttr(player, "soulbound.attr.health", String.valueOf(data.getHealth()), ChatFormatting.WHITE);
+        sendAttr(player, "soulbound.attr.speed", String.valueOf(data.getSpeed()), ChatFormatting.WHITE);
+        sendAttr(player, "soulbound.attr.armor", String.valueOf(data.getArmor()), ChatFormatting.WHITE);
+        sendAttr(player, "soulbound.attr.luck", String.valueOf(data.getLuck()), ChatFormatting.WHITE);
         return 1;
     }
 
@@ -83,14 +83,14 @@ public final class ProgressCommand {
         AttributeUtil.applyProgressAttributes(player, data);
 
         source.sendSuccess(
-                () -> Component.translatable("rogueprogress.command.add_soul", amount, data.getSoul())
+                () -> Component.translatable("soulbound.command.add_soul", amount, data.getSoul())
                         .withStyle(ChatFormatting.GREEN), false);
         return amount;
     }
 
     /** 显示当前所有属性的生效上限。 */
     private static int showCaps(CommandSourceStack source) {
-        source.sendSuccess(() -> Component.translatable("rogueprogress.command.caps_header").withStyle(ChatFormatting.GOLD), false);
+        source.sendSuccess(() -> Component.translatable("soulbound.command.caps_header").withStyle(ChatFormatting.GOLD), false);
         sendCap(source, "strength");
         sendCap(source, "health");
         sendCap(source, "speed");
@@ -100,8 +100,8 @@ public final class ProgressCommand {
     }
 
     private static void sendCap(CommandSourceStack source, String attrKey) {
-        Component name = Component.translatable("rogueprogress.attr." + attrKey);
-        source.sendSuccess(() -> Component.translatable("rogueprogress.command.cap_fmt", name, Config.getEffectiveCap(attrKey)).withStyle(ChatFormatting.YELLOW), false);
+        Component name = Component.translatable("soulbound.attr." + attrKey);
+        source.sendSuccess(() -> Component.translatable("soulbound.command.cap_fmt", name, Config.getEffectiveCap(attrKey)).withStyle(ChatFormatting.YELLOW), false);
     }
 
     /** 运行时覆盖指定属性的上限（不写盘，重启后失效）。 */
@@ -115,19 +115,19 @@ public final class ProgressCommand {
             case "armor": case "护甲": key = "armor"; break;
             case "luck": case "幸运": key = "luck"; break;
             default:
-                source.sendFailure(Component.translatable("rogueprogress.command.unknown_attr", attr));
+                source.sendFailure(Component.translatable("soulbound.command.unknown_attr", attr));
                 return 0;
         }
         Config.setRuntimeCap(key, value);
-        source.sendSuccess(() -> Component.translatable("rogueprogress.command.set_cap",
-                Component.translatable("rogueprogress.attr." + key), value).withStyle(ChatFormatting.GREEN), false);
+        source.sendSuccess(() -> Component.translatable("soulbound.command.set_cap",
+                Component.translatable("soulbound.attr." + key), value).withStyle(ChatFormatting.GREEN), false);
         return value;
     }
 
     /** 清除所有运行时覆盖，恢复到持久化配置值。 */
     private static int reloadCaps(CommandSourceStack source) {
         Config.clearRuntimeCaps();
-        source.sendSuccess(() -> Component.translatable("rogueprogress.command.reload").withStyle(ChatFormatting.GREEN), false);
+        source.sendSuccess(() -> Component.translatable("soulbound.command.reload").withStyle(ChatFormatting.GREEN), false);
         return 1;
     }
 }

@@ -1,4 +1,4 @@
-package com.example.rogueprogress.client;
+package com.wprnn.soulbound.client;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -14,7 +14,7 @@ public class ConfirmResetScreen extends Screen {
     private final Runnable onConfirm;
 
     public ConfirmResetScreen(@Nullable Screen parent, Runnable onConfirm) {
-        super(Component.translatable("rogueprogress.gui.reset_title"));
+        super(Component.translatable("soulbound.gui.reset_title"));
         this.parent = parent;
         this.onConfirm = onConfirm;
     }
@@ -23,12 +23,12 @@ public class ConfirmResetScreen extends Screen {
     protected void init() {
         int w = this.width;
         int h = this.height;
-        addRenderableWidget(Button.builder(Component.translatable("rogueprogress.gui.confirm"), b -> {
+        addRenderableWidget(Button.builder(Component.translatable("soulbound.gui.confirm"), b -> {
             if (onConfirm != null) onConfirm.run();
             Minecraft.getInstance().setScreen(parent);
         }).bounds((w - 200) / 2, h / 2 + 10, 90, 20).build());
 
-        addRenderableWidget(Button.builder(Component.translatable("rogueprogress.gui.cancel"), b -> Minecraft.getInstance().setScreen(parent))
+        addRenderableWidget(Button.builder(Component.translatable("soulbound.gui.cancel"), b -> Minecraft.getInstance().setScreen(parent))
                 .bounds((w - 200) / 2 + 110, h / 2 + 10, 90, 20).build());
     }
 }

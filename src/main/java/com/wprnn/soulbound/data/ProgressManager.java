@@ -1,4 +1,4 @@
-package com.example.rogueprogress.data;
+package com.wprnn.soulbound.data;
 
 import java.util.Map;
 import java.util.UUID;

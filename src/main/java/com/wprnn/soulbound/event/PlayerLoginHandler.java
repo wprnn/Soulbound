@@ -1,9 +1,9 @@
-package com.example.rogueprogress.event;
+package com.wprnn.soulbound.event;
 
-import com.example.rogueprogress.RogueProgress;
-import com.example.rogueprogress.data.ProgressData;
-import com.example.rogueprogress.data.ProgressManager;
-import com.example.rogueprogress.util.AttributeUtil;
+import com.wprnn.soulbound.Soulbound;
+import com.wprnn.soulbound.data.ProgressData;
+import com.wprnn.soulbound.data.ProgressManager;
+import com.wprnn.soulbound.util.AttributeUtil;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent;
@@ -28,8 +28,8 @@ public final class PlayerLoginHandler {
         ProgressData data = ProgressManager.reload(playerId);
         AttributeUtil.applyProgressAttributes(player, data);
 
-        RogueProgress.LOGGER.info(
-                "Loaded Rogue Progress data for {} ({}): soul={}, level={}, strength={}, health={}, speed={}, armor={}, luck={}",
+        Soulbound.LOGGER.info(
+                "Loaded Soulbound data for {} ({}): soul={}, level={}, strength={}, health={}, speed={}, armor={}, luck={}",
                 player.getGameProfile().getName(),
                 playerId,
                 data.getSoul(),

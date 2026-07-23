@@ -1,6 +1,6 @@
-package com.example.rogueprogress.event;
+package com.wprnn.soulbound.event;
 
-import com.example.rogueprogress.data.ProgressManager;
+import com.wprnn.soulbound.data.ProgressManager;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;

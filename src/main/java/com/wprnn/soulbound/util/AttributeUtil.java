@@ -1,8 +1,8 @@
-package com.example.rogueprogress.util;
+package com.wprnn.soulbound.util;
 
-import com.example.rogueprogress.RogueProgress;
-import com.example.rogueprogress.config.Config;
-import com.example.rogueprogress.data.ProgressData;
+import com.wprnn.soulbound.Soulbound;
+import com.wprnn.soulbound.config.Config;
+import com.wprnn.soulbound.data.ProgressData;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -116,6 +116,6 @@ public final class AttributeUtil {
     }
 
     private static ResourceLocation modifierId(String path) {
-        return ResourceLocation.fromNamespaceAndPath(RogueProgress.MOD_ID, path);
+        return ResourceLocation.fromNamespaceAndPath(Soulbound.MOD_ID, path);
     }
 }

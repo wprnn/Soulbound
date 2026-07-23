@@ -1,6 +1,6 @@
-package com.example.rogueprogress.data;
+package com.wprnn.soulbound.data;
 
-import com.example.rogueprogress.config.Config;
+import com.wprnn.soulbound.config.Config;
 
 /**
  * 单个玩家的进度数据模型。

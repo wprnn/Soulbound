@@ -1,4 +1,4 @@
-package com.example.rogueprogress.config;
+package com.wprnn.soulbound.config;
 
 import net.neoforged.neoforge.common.ModConfigSpec;
 
@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentMap;
 
 /**
  * 模组配置定义。所有配置项均通过 {@link ModConfigSpec} 声明，
- * 支持运行时上限覆盖（用于 /rogueprogress caps set 命令），
+ * 支持运行时上限覆盖（用于 /Soulbound caps set 命令），
  * 配置重载时自动清理运行时覆盖并重新钳制玩家属性。
  */
 public final class Config {
@@ -140,8 +140,6 @@ public final class Config {
     private static final String REFUND_PERCENT_COMMENT = "Refund percentage when resetting attributes (0-100)";
 
     static {
-        BUILDER.push("caps");
-
         STRENGTH_CAP = BUILDER
                 .comment(STRENGTH_CAP_COMMENT)
                 .defineInRange(STRENGTH_CAP_NAME, STRENGTH_CAP_DEFAULT, 0, Integer.MAX_VALUE);
@@ -158,10 +156,6 @@ public final class Config {
                 .comment(LUCK_CAP_COMMENT)
                 .defineInRange(LUCK_CAP_NAME, LUCK_CAP_DEFAULT, 0, Integer.MAX_VALUE);
 
-        BUILDER.pop();
-        BUILDER.push("bonuses");
-
-        // Strength
         STRENGTH_FLAT_PER_LEVEL = BUILDER
                 .comment(STRENGTH_FLAT_PER_LEVEL_COMMENT)
                 .defineInRange(STRENGTH_FLAT_PER_LEVEL_NAME, STRENGTH_FLAT_PER_LEVEL_DEFAULT, 0.0D, Double.MAX_VALUE);
@@ -178,7 +172,6 @@ public final class Config {
                 .comment(STRENGTH_PERCENT_PER_LEVEL_LATER_COMMENT)
                 .defineInRange(STRENGTH_PERCENT_PER_LEVEL_LATER_NAME, STRENGTH_PERCENT_PER_LEVEL_LATER_DEFAULT, 0.0D, Double.MAX_VALUE);
 
-        // Health
         HEALTH_FLAT_PER_LEVEL = BUILDER
                 .comment(HEALTH_FLAT_PER_LEVEL_COMMENT)
                 .defineInRange(HEALTH_FLAT_PER_LEVEL_NAME, HEALTH_FLAT_PER_LEVEL_DEFAULT, 0.0D, Double.MAX_VALUE);
@@ -186,7 +179,6 @@ public final class Config {
                 .comment(HEALTH_PERCENT_PER_LEVEL_COMMENT)
                 .defineInRange(HEALTH_PERCENT_PER_LEVEL_NAME, HEALTH_PERCENT_PER_LEVEL_DEFAULT, 0.0D, Double.MAX_VALUE);
 
-        // Speed
         SPEED_FLAT_PER_LEVEL = BUILDER
                 .comment(SPEED_FLAT_PER_LEVEL_COMMENT)
                 .defineInRange(SPEED_FLAT_PER_LEVEL_NAME, SPEED_FLAT_PER_LEVEL_DEFAULT, 0.0D, Double.MAX_VALUE);
@@ -194,7 +186,6 @@ public final class Config {
                 .comment(SPEED_PERCENT_PER_LEVEL_COMMENT)
                 .defineInRange(SPEED_PERCENT_PER_LEVEL_NAME, SPEED_PERCENT_PER_LEVEL_DEFAULT, 0.0D, Double.MAX_VALUE);
 
-        // Armor
         ARMOR_FLAT_PER_LEVEL = BUILDER
                 .comment(ARMOR_FLAT_PER_LEVEL_COMMENT)
                 .defineInRange(ARMOR_FLAT_PER_LEVEL_NAME, ARMOR_FLAT_PER_LEVEL_DEFAULT, 0.0D, Double.MAX_VALUE);
@@ -211,15 +202,12 @@ public final class Config {
                 .comment(ARMOR_PERCENT_PER_LEVEL_LATER_COMMENT)
                 .defineInRange(ARMOR_PERCENT_PER_LEVEL_LATER_NAME, ARMOR_PERCENT_PER_LEVEL_LATER_DEFAULT, 0.0D, Double.MAX_VALUE);
 
-        // Luck
         LUCK_FLAT_PER_LEVEL = BUILDER
                 .comment(LUCK_FLAT_PER_LEVEL_COMMENT)
                 .defineInRange(LUCK_FLAT_PER_LEVEL_NAME, LUCK_FLAT_PER_LEVEL_DEFAULT, 0.0D, Double.MAX_VALUE);
         LUCK_PERCENT_PER_LEVEL = BUILDER
                 .comment(LUCK_PERCENT_PER_LEVEL_COMMENT)
                 .defineInRange(LUCK_PERCENT_PER_LEVEL_NAME, LUCK_PERCENT_PER_LEVEL_DEFAULT, 0.0D, Double.MAX_VALUE);
-
-        BUILDER.pop();
 
         REFUND_PERCENT = BUILDER
                 .comment(REFUND_PERCENT_COMMENT)
@@ -228,7 +216,7 @@ public final class Config {
 
     public static final ModConfigSpec SPEC = BUILDER.build();
 
-    // 运行时上限覆盖表，由 /rogueprogress caps set 写入，配置重载时清空。
+    // 运行时上限覆盖表，由 /Soulbound caps set 写入，配置重载时清空。
     private static final ConcurrentMap<String, Integer> RUNTIME_OVERRIDES = new ConcurrentHashMap<>();
 
     /**

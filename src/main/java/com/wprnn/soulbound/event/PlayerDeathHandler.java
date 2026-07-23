@@ -1,6 +1,6 @@
-package com.example.rogueprogress.event;
+package com.wprnn.soulbound.event;
 
-import com.example.rogueprogress.data.ProgressManager;
+import com.wprnn.soulbound.data.ProgressManager;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -31,10 +31,10 @@ public final class PlayerDeathHandler {
 
         int runSouls = ProgressManager.getRunSouls(playerId);
 
-        player.sendSystemMessage(Component.translatable("rogueprogress.message.header").withStyle(ChatFormatting.GOLD));
-        player.sendSystemMessage(Component.translatable("rogueprogress.message.run").withStyle(ChatFormatting.YELLOW));
-        player.sendSystemMessage(Component.translatable("rogueprogress.message.kills", runKills).withStyle(ChatFormatting.GRAY));
-        player.sendSystemMessage(Component.translatable("rogueprogress.message.souls_earned", runSouls).withStyle(ChatFormatting.AQUA));
+        player.sendSystemMessage(Component.translatable("soulbound.message.header").withStyle(ChatFormatting.GOLD));
+        player.sendSystemMessage(Component.translatable("soulbound.message.run").withStyle(ChatFormatting.YELLOW));
+        player.sendSystemMessage(Component.translatable("soulbound.message.kills", runKills).withStyle(ChatFormatting.GRAY));
+        player.sendSystemMessage(Component.translatable("soulbound.message.souls_earned", runSouls).withStyle(ChatFormatting.AQUA));
 
         ProgressManager.resetRun(playerId);
     }
