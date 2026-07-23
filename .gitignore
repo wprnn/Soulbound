@@ -1,21 +1,28 @@
-# MacOS DS_Store files
+# OS files
 .DS_Store
+Thumbs.db
+*.swp
+*.swo
 
-# Gradle cache folder
+# Gradle
 .gradle
-
-# Gradle build folder
 build
+bin
 
-# IntelliJ
-out/
+# IDE
 .idea
 *.iml
-# mpeltonen/sbt-idea plugin
 .idea_modules/
+out/
+.classpath
+.project
+*.launch
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+# Java crash logs
 hs_err_pid*
 
-# Common working directory
+# Runtime / logs
 run
+*.log
+*.bak
+*.orig

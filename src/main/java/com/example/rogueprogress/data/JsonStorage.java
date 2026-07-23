@@ -15,15 +15,19 @@ import java.nio.file.Path;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * 跨世界进度的磁盘读写层。
+ *
+ * <p>数据存放在全局 Minecraft 配置目录而非存档文件夹中，
+ * 因此删除或更换世界不会丢失元进度数据。</p>
+ */
 public final class JsonStorage {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
+    // 发行版路径：.minecraft/config/rogueprogress
+    // 开发环境路径：run/config/rogueprogress
     private static final Path DATA_DIRECTORY = FMLPaths.CONFIGDIR.get().resolve(RogueProgress.MOD_ID);
 
     private JsonStorage() {
-    }
-
-    public static Path getDataDirectory() {
-        return DATA_DIRECTORY;
     }
 
     public static Path getPlayerDataPath(UUID playerId) {
@@ -34,6 +38,7 @@ public final class JsonStorage {
         Path path = getPlayerDataPath(playerId);
 
         if (!Files.exists(path)) {
+            // 新玩家首次无文件是正常情况，由 ProgressManager 创建默认数据。
             return Optional.empty();
         }
 
@@ -46,6 +51,7 @@ public final class JsonStorage {
             data.sanitize();
             return Optional.of(data);
         } catch (IOException | JsonSyntaxException exception) {
+            // JSON 解析失败时回退默认值，不阻止玩家加入。
             RogueProgress.LOGGER.error("Failed to load Rogue Progress data for player {} from {}", playerId, path, exception);
             return Optional.empty();
         }
@@ -58,6 +64,7 @@ public final class JsonStorage {
             Files.createDirectories(DATA_DIRECTORY);
             data.sanitize();
 
+            // UTF-8 确保 UUID 及未来非 ASCII 文本稳定可读。
             try (Writer writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
                 GSON.toJson(data, writer);
             }

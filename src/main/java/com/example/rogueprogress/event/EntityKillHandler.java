@@ -9,10 +9,18 @@ import net.minecraft.world.entity.monster.Enemy;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 
+/**
+ * 服务端玩家击杀敌对生物时授予灵魂。
+ *
+ * <p>奖励判定集中在此处。如需添加自定义精英词缀、怪物标签或配置化奖励，
+ * 请优先修改 {@link #isElite(LivingEntity)} 和 {@link #isBoss(LivingEntity)} 的实现。</p>
+ */
 public final class EntityKillHandler {
+    // 击杀奖励的平衡参数
     private static final int NORMAL_SOUL_REWARD = 1;
     private static final int ELITE_SOUL_REWARD = 5;
     private static final int BOSS_SOUL_REWARD = 25;
+    // 最大生命值不低于此阈值的敌对生物被视为精英。
     private static final double ELITE_MAX_HEALTH_THRESHOLD = 40.0D;
 
     private EntityKillHandler() {
@@ -22,10 +30,12 @@ public final class EntityKillHandler {
     public static void onLivingDeath(LivingDeathEvent event) {
         LivingEntity killedEntity = event.getEntity();
 
+        // 仅在逻辑服务端执行，且不处理玩家击杀玩家。
         if (killedEntity.level().isClientSide() || killedEntity instanceof ServerPlayer) {
             return;
         }
 
+        // getEntity() 为直接攻击者。如需投射物归属支持可在此处扩展。
         Entity attacker = event.getSource().getEntity();
         if (!(attacker instanceof ServerPlayer player)) {
             return;
@@ -41,6 +51,7 @@ public final class EntityKillHandler {
     }
 
     private static int getSoulReward(LivingEntity killedEntity) {
+        // Boss 优先判断，因其未必实现 Enemy 接口。
         if (isBoss(killedEntity)) {
             return BOSS_SOUL_REWARD;
         }
@@ -62,6 +73,7 @@ public final class EntityKillHandler {
     }
 
     private static boolean isElite(LivingEntity entity) {
+        // 自定义名称是数据包/地图作者标记精英生物的便捷方式。
         return entity.getMaxHealth() >= ELITE_MAX_HEALTH_THRESHOLD || entity.hasCustomName();
     }
 }

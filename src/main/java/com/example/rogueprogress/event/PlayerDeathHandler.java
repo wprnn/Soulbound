@@ -9,15 +9,15 @@ import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 
 import java.util.UUID;
 
+/**
+ * 玩家死亡时结算本次运行奖励并发送统计摘要。
+ */
 public final class PlayerDeathHandler {
-    private PlayerDeathHandler() {
-    }
+    private PlayerDeathHandler() {}
 
     @SubscribeEvent
     public static void onPlayerDeath(LivingDeathEvent event) {
-        if (!(event.getEntity() instanceof ServerPlayer player)) {
-            return;
-        }
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
 
         UUID playerId = player.getUUID();
         int runKills = ProgressManager.getRunKills(playerId);
@@ -31,10 +31,10 @@ public final class PlayerDeathHandler {
 
         int runSouls = ProgressManager.getRunSouls(playerId);
 
-        player.sendSystemMessage(Component.literal("===== Rogue Progress =====").withStyle(ChatFormatting.GOLD));
-        player.sendSystemMessage(Component.literal("本次轮回：").withStyle(ChatFormatting.YELLOW));
-        player.sendSystemMessage(Component.literal("击杀数量: " + runKills).withStyle(ChatFormatting.GRAY));
-        player.sendSystemMessage(Component.literal("获得灵魂: " + runSouls).withStyle(ChatFormatting.AQUA));
+        player.sendSystemMessage(Component.translatable("rogueprogress.message.header").withStyle(ChatFormatting.GOLD));
+        player.sendSystemMessage(Component.translatable("rogueprogress.message.run").withStyle(ChatFormatting.YELLOW));
+        player.sendSystemMessage(Component.translatable("rogueprogress.message.kills", runKills).withStyle(ChatFormatting.GRAY));
+        player.sendSystemMessage(Component.translatable("rogueprogress.message.souls_earned", runSouls).withStyle(ChatFormatting.AQUA));
 
         ProgressManager.resetRun(playerId);
     }
