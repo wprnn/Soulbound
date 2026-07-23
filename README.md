@@ -1,5 +1,5 @@
 # Soulbound
-1
+
 跨世界 Roguelike 元进度模组。
 
 ## 概述
